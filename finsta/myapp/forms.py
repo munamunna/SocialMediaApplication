@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from myapp.models import UserProfile
+from myapp.models import UserProfile,Posts
 
 class SignUpForm(UserCreationForm):
     class Meta:
@@ -24,4 +24,7 @@ class ProfileEditForm(forms.ModelForm):
             "dob":forms.DateInput(attrs={"class":"form-control","type":"date"})
 
         }
-
+class PostForm(forms.ModelForm):
+    class Meta:
+        model=Posts
+        fields=["title","image"]

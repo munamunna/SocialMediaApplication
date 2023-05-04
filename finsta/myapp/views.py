@@ -1,21 +1,28 @@
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
-from myapp.forms import SignUpForm,LoginForm,ProfileEditForm
-from myapp.models import UserProfile
+from myapp.forms import SignUpForm,LoginForm,ProfileEditForm,PostForm
+from myapp.models import UserProfile,Posts
 
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
-from django.views.generic import CreateView,View,TemplateView,UpdateView
+from django.views.generic import CreateView,View,TemplateView,UpdateView,ListView
 from django.contrib import messages
 from django.urls import reverse_lazy
 
 
 
 # Create your views here.
-class Indexview(TemplateView):
+class Indexview(CreateView,ListView):
     
     template_name="index.html"
+    form_class=PostForm
+    model=Posts
+    success_url=reverse_lazy("index")
+    context_object_name="posts"
+    def form_valid(self, form):
+        form.instance.user=self.request.user
+        return super().form_valid(form)
 
 class SignUpView(CreateView):
     model=User
@@ -58,4 +65,10 @@ class ProfileEditView(UpdateView):
     template_name="profileedit.html"
     model=UserProfile
     success_url=reverse_lazy("index")
+
+def add_like_view(request,*args,**kargs):
+    id=kargs.get("pk")
+    post_obj=Posts.objects.get(id=id)
+    post_obj.liked_by.add(request.user)
+    return redirect("index")
     

@@ -26,4 +26,5 @@ urlpatterns = [
     path('',views.SigninView.as_view(),name="signin"),
     path('index',views.Indexview.as_view(),name="index"),
     path('profiles/<int:pk>/change/',views.ProfileEditView.as_view(),name="profile-edit"),
+    path('posts/<int:pk>/like',views.add_like_view,name="add-like"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

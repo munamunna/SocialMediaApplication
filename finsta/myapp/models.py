@@ -15,6 +15,8 @@ class UserProfile(models.Model):
 
     def __str__(self) -> str:
         return self.user.username
+# profile_obj.following.add(profile_obj)
+# profile_obj.following.all()
     
 class Posts(models.Model):
     title=models.CharField(max_length=200)
@@ -26,6 +28,8 @@ class Posts(models.Model):
 
     def __str__(self):
         return self.title
+# post_obj.liked_by.add(model instance)
+# post_obj.liked_by.all()
     
 class Comments(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
