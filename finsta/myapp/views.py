@@ -1,14 +1,22 @@
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
-from myapp.forms import SignUpForm,LoginForm
+from myapp.forms import SignUpForm,LoginForm,ProfileEditForm
+from myapp.models import UserProfile
+
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
-from django.views.generic import CreateView,View
+from django.views.generic import CreateView,View,TemplateView,UpdateView
 from django.contrib import messages
 from django.urls import reverse_lazy
 
+
+
 # Create your views here.
+class Indexview(TemplateView):
+    
+    template_name="index.html"
+
 class SignUpView(CreateView):
     model=User
     form_class=SignUpForm
@@ -41,6 +49,13 @@ class SigninView(View):
             if usr:
                 login(request,usr)
                 messages.success(request,"login success")
-                return redirect("signin")
+                return redirect("index")
             messages.error(request,"invalid credential")
             return render(request,self.template_name,{"form":form})
+
+class ProfileEditView(UpdateView):
+    form_class=ProfileEditForm
+    template_name="profileedit.html"
+    model=UserProfile
+    success_url=reverse_lazy("index")
+    
