@@ -2,7 +2,7 @@ from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from myapp.forms import SignUpForm,LoginForm,ProfileEditForm,PostForm
-from myapp.models import UserProfile,Posts
+from myapp.models import UserProfile,Posts,Comments
 
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
@@ -65,10 +65,19 @@ class ProfileEditView(UpdateView):
     template_name="profileedit.html"
     model=UserProfile
     success_url=reverse_lazy("index")
-
+# localhost:8000/posts{id}/like/
 def add_like_view(request,*args,**kargs):
     id=kargs.get("pk")
     post_obj=Posts.objects.get(id=id)
     post_obj.liked_by.add(request.user)
+    return redirect("index")
+
+# localhost:8000/posts/{id}/comments/add/
+def add_comment_view(request,*args,**kargs):
+    id=kargs.get("pk")
+    post_obj=Posts.objects.get(id=id)
+    comment=request.POST.get("comment")
+    user=request.user
+    Comments.objects.create(user=user,comment_text=comment,post=post_obj)
     return redirect("index")
     

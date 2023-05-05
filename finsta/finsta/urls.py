@@ -27,4 +27,5 @@ urlpatterns = [
     path('index',views.Indexview.as_view(),name="index"),
     path('profiles/<int:pk>/change/',views.ProfileEditView.as_view(),name="profile-edit"),
     path('posts/<int:pk>/like',views.add_like_view,name="add-like"),
+    path('posts/<int:pk>/comments/add',views.add_comment_view,name="add-comment"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
