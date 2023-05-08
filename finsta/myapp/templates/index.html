@@ -213,7 +213,7 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
       </div>
 
 
-      <small>{{c.comment_date}}</small>
+      <small>{{c.created_date}}</small>
 
       </div>
 
@@ -221,7 +221,9 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
       <div class="action d-flex justify-content-between mt-2 align-items-center">
 
         <div class="reply px-4">
-            <small>Remove</small>
+          {%if request.user == c.user%}
+            <small><a href="{%url 'removecomment' c.id%}">Remove</a></small>
+            {%endif%}
             <span class="dots"></span>
             
            

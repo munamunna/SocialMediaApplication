@@ -81,3 +81,13 @@ def add_comment_view(request,*args,**kargs):
     Comments.objects.create(user=user,comment_text=comment,post=post_obj)
     return redirect("index")
     
+# localhost:8000/Comments{id}/remove/
+def remove_comment_view(request,*args,**kargs):
+    id=kargs.get("pk")
+    comment_obj=Comments.objects.get(id=id)
+    if request.user == comment_obj.user:
+        comment_obj.delete()
+        return redirect("index")
+    else:
+        messages.error(request,"pls contact admin")
+        return redirect("signin")
